@@ -1,0 +1,99 @@
+services:
+  lab5-tools:
+    container_name: lab5-tools
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - "8070:8070"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8070
+      Infrastructure__Persistence__Postgres__Host: postgres
+      Infrastructure__Persistence__Postgres__Port: "5432"
+      Presentation__Kafka__Host: kafka:9094
+      ServiceUrl__BaseUrl: ${SERVICE_URL_BASE_URL:-http://host.docker.internal:5000}
+    networks:
+      - lab5-tools-network
+
+  postgres:
+    image: postgres:16
+    container_name: lab5-tools-postgres
+    command: postgres -c max_prepared_transactions=100
+    environment:
+      POSTGRES_DB: lab5_tools
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - lab5-tools-postgres-data:/var/lib/postgresql/data
+    networks:
+      - lab5-tools-network
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: lab5-tools-zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - lab5-tools-network
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: lab5-tools-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9094,OUTSIDE://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9094,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_CREATE_TOPICS: "account_created:1:1,invoice_created:1:1,approval_result:1:1"
+    networks:
+      - lab5-tools-network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: lab5-tools-kafka-ui
+    depends_on:
+      - kafka
+    environment:
+      kafka.clusters.0.name: kafka
+      kafka.clusters.0.bootstrapServers: kafka:9094
+      kafka.clusters.0.defaultKeySerde: ProtobufFile
+      kafka.clusters.0.defaultValueSerde: ProtobufFile
+
+      kafka.clusters.0.serde.0.name: ProtobufFile
+      kafka.clusters.0.serde.0.properties.protobufFilesDir: /schemas/
+
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.account_created: accounts.AccountCreationKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.invoice_created: invoices.InvoiceCreationKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.approval_result: approvals.ApprovalResultKey
+
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.account_created: accounts.AccountCreationValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.invoice_created: invoices.InvoiceCreationValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.approval_result: approvals.ApprovalResultValue
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/account_created.proto:/schemas/protos/account_created.proto:ro
+      - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/invoice_created.proto:/schemas/protos/invoice_created.proto:ro
+      - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/google/type/money.proto:/schemas/google/type/money.proto:ro
+      - ./src/Infrastructure/Lab5.Tools.Infrastructure.Kafka/protos/approval_result.proto:/schemas/protos/approval_result.proto:ro
+    networks:
+      - lab5-tools-network
+networks:
+  lab5-tools-network:
+    name: lab5-tools-network
+
+volumes:
+  lab5-tools-postgres-data:

@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <EnablePackageVersionOverride>false</EnablePackageVersionOverride>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Google.Api.CommonProtos" Version="2.17.0" />
+    <PackageVersion Include="Grpc.AspNetCore" Version="2.67.0" />
+    <PackageVersion Include="Grpc.AspNetCore.Server.Reflection" Version="2.67.0" />
+    <PackageVersion Include="Grpc.Tools" Version="2.67.0" />
+    <PackageVersion Include="Itmo.Dev.Editorconfig" Version="1.0.16" />
+    <PackageVersion Include="Itmo.Dev.Platform.Kafka" Version="2.3.388" />
+    <PackageVersion Include="Itmo.Dev.Platform.MessagePersistence" Version="3.0.388" />
+    <PackageVersion Include="Itmo.Dev.Platform.MessagePersistence.Postgres" Version="3.0.388" />
+    <PackageVersion Include="Itmo.Dev.Platform.Observability" Version="1.4.388" />
+    <PackageVersion Include="Itmo.Dev.Platform.Persistence.Abstractions" Version="1.2.388" />
+    <PackageVersion Include="Itmo.Dev.Platform.Persistence.Postgres" Version="1.2.388" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.8" />
+    <PackageVersion Include="SourceKit.Generators.Builder" Version="1.2.59" />
+    <PackageVersion Include="SourceKit.Analyzers.Collections" Version="1.0.59" />
+    <PackageVersion Include="SourceKit.Analyzers.Enumerable" Version="1.0.59" />
+    <PackageVersion Include="SourceKit.Analyzers.MemberAccessibility" Version="1.0.59" />
+    <PackageVersion Include="SourceKit.Analyzers.Nullable" Version="1.0.59" />
+    <PackageVersion Include="SourceKit.Analyzers.Properties" Version="1.0.59" />
+    <PackageVersion Include="SourceKit.Generators.Grpc" Version="1.0.59" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
+  </ItemGroup>
+</Project>

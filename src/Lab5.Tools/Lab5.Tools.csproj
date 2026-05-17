@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <ItemGroup>
+        <ProjectReference Include="..\Application\Lab5.Tools.Application\Lab5.Tools.Application.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Lab5.Tools.Infrastructure.Kafka\Lab5.Tools.Infrastructure.Kafka.csproj" />
+        <ProjectReference Include="..\Infrastructure\Lab5.Tools.Infrastructure.Persistence\Lab5.Tools.Infrastructure.Persistence.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Lab5.Tools.Infrastructure.Integrations\Lab5.Tools.Infrastructure.Integrations.csproj" />
+        <ProjectReference Include="..\Presentation\Lab5.Tools.Presentation.Grpc\Lab5.Tools.Presentation.Grpc.csproj"/>
+        <ProjectReference Include="..\Presentation\Lab5.Tools.Presentation.Kafka\Lab5.Tools.Presentation.Kafka.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Itmo.Dev.Platform.Kafka" />
+        <PackageReference Include="Itmo.Dev.Platform.MessagePersistence" />
+        <PackageReference Include="Itmo.Dev.Platform.MessagePersistence.Postgres" />
+        <PackageReference Include="Itmo.Dev.Platform.Observability" />
+        <PackageReference Include="Itmo.Dev.Platform.Persistence.Postgres" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="appsettings.*.json">
+            <DependentUpon>appsettings.json</DependentUpon>
+        </Content>
+    </ItemGroup>
+
+</Project>

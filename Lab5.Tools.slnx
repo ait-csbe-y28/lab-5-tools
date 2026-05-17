@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/common/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/docker/">
+    <File Path="docker-compose.yaml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Lab5.Tools/Lab5.Tools.csproj" />
+  </Folder>
+  <Folder Name="/src/Application/">
+    <Project Path="src/Application/Lab5.Tools.Application.Abstractions/Lab5.Tools.Application.Abstractions.csproj" />
+    <Project Path="src/Application/Lab5.Tools.Application.Contracts/Lab5.Tools.Application.Contracts.csproj" />
+    <Project Path="src/Application/Lab5.Tools.Application.Models/Lab5.Tools.Application.Models.csproj" />
+    <Project Path="src/Application/Lab5.Tools.Application/Lab5.Tools.Application.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/Lab5.Tools.Infrastructure.Integrations/Lab5.Tools.Infrastructure.Integrations.csproj" />
+      <Project Path="src/Infrastructure/Lab5.Tools.Infrastructure.Kafka/Lab5.Tools.Infrastructure.Kafka.csproj" />
+      <Project Path="src/Infrastructure/Lab5.Tools.Infrastructure.Persistence/Lab5.Tools.Infrastructure.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+      <Project Path="src/Presentation/Lab5.Tools.Presentation.Grpc/Lab5.Tools.Presentation.Grpc.csproj" />
+      <Project Path="src/Presentation/Lab5.Tools.Presentation.Kafka/Lab5.Tools.Presentation.Kafka.csproj" />
+  </Folder>
+</Solution>
