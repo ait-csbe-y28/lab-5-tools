@@ -7,6 +7,7 @@
         </PackageReference>
         <PackageReference Include="Google.Api.CommonProtos"/>
         <PackageReference Include="Itmo.Dev.Platform.Kafka"/>
+        <PackageReference Include="SourceKit.Generators.Grpc" />
     </ItemGroup>
 
     <ItemGroup>

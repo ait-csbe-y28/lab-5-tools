@@ -4,6 +4,7 @@
         <PackageReference Include="Grpc.AspNetCore"/>
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection"/>
         <PackageReference Include="Grpc.Tools"/>
+        <PackageReference Include="SourceKit.Generators.Grpc" />
     </ItemGroup>
 
     <ItemGroup>

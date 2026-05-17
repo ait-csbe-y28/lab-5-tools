@@ -34,11 +34,11 @@ internal sealed class InvoiceService : IInvoiceService
     {
         var getRecipientAccountQuery = GetAccountQuery.Build(builder => builder.WithId(request.RecipientId));
 
-        Account? recepientAccount = await _persistenceContext.Accounts
+        Account? recipientAccount = await _persistenceContext.Accounts
             .Query(getRecipientAccountQuery, cancellationToken)
             .SingleOrDefaultAsync(cancellationToken);
 
-        if (recepientAccount is null)
+        if (recipientAccount is null)
             return new CreateInvoice.Result.AccountNotFound($"Account with id: {request.RecipientId} not found");
 
         var getPayerAccountQuery = GetAccountQuery.Build(builder => builder.WithId(request.PayerId));

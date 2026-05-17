@@ -1,4 +1,3 @@
-using ApprovalResult.Kafka.Contracts;
 using Itmo.Dev.Platform.Kafka.Configuration;
 using Itmo.Dev.Platform.Kafka.Extensions;
 using Lab5.Tools.Application.Abstractions.Events;
@@ -18,8 +17,8 @@ public static class ServiceCollectionExtensions
         configuration = configuration.GetSection(producerKey);
 
         kafka.AddProducer(b => b
-            .WithKey<ApprovalResultKey>()
-            .WithValue<ApprovalResultValue>()
+            .WithKey<ProtoApprovalResultKey>()
+            .WithValue<ProtoApprovalResultValue>()
             .WithConfiguration(configuration.GetSection("ApprovalResult"))
             .SerializeKeyWithProto()
             .SerializeValueWithProto()

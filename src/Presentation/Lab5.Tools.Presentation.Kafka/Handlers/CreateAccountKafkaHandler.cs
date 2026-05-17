@@ -6,25 +6,27 @@ using Microsoft.Extensions.Logging;
 
 namespace Lab5.Tools.Presentation.Kafka.Handlers;
 
-public sealed class CreateAccountHandler : IKafkaConsumerHandler<AccountCreationKey, AccountCreationValue>
+public sealed class CreateAccountKafkaHandler : IKafkaConsumerHandler<ProtoAccountCreationKey, ProtoAccountCreationValue>
 {
     private readonly IAccountService _accountService;
-    private readonly ILogger<CreateAccountHandler> _logger;
+    private readonly ILogger<CreateAccountKafkaHandler> _logger;
 
-    public CreateAccountHandler(IAccountService accountService, ILogger<CreateAccountHandler> logger)
+    public CreateAccountKafkaHandler(IAccountService accountService, ILogger<CreateAccountKafkaHandler> logger)
     {
         _accountService = accountService;
         _logger = logger;
     }
 
     public async ValueTask HandleAsync(
-        IEnumerable<IKafkaConsumerMessage<AccountCreationKey, AccountCreationValue>> messages,
+        IEnumerable<IKafkaConsumerMessage<ProtoAccountCreationKey, ProtoAccountCreationValue>> messages,
         CancellationToken cancellationToken)
     {
-        foreach (IKafkaConsumerMessage<AccountCreationKey, AccountCreationValue> message in messages)
+        foreach (IKafkaConsumerMessage<ProtoAccountCreationKey, ProtoAccountCreationValue> message in messages)
         {
-            if (IsNeedToSkip(message))
+            if (ShouldHandle(message) is false)
+            {
                 continue;
+            }
 
             var request = new CreateAccount.Request(
                 new UserId(message.Value.UserId),
@@ -43,8 +45,8 @@ public sealed class CreateAccountHandler : IKafkaConsumerHandler<AccountCreation
         }
     }
 
-    private bool IsNeedToSkip(IKafkaConsumerMessage<AccountCreationKey, AccountCreationValue> message)
+    private bool ShouldHandle(IKafkaConsumerMessage<ProtoAccountCreationKey, ProtoAccountCreationValue> message)
     {
-        return message.Value.AccountType != AccountType.Corporate;
+        return message.Value.AccountType == AccountType.Corporate;
     }
 }

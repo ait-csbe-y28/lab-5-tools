@@ -1,8 +1,12 @@
 <Solution>
   <Folder Name="/common/">
+    <File Path=".editorconfig" />
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/docker/">
+    <File Path="docker-compose.yaml" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Lab5.Tools/Lab5.Tools.csproj" />

@@ -1,5 +1,3 @@
-using Accounts.Kafka.Contracts;
-using Invoices.Kafka.Contracts;
 using Itmo.Dev.Platform.Kafka.Configuration;
 using Itmo.Dev.Platform.Kafka.Extensions;
 using Lab5.Tools.Presentation.Kafka.Handlers;
@@ -17,20 +15,20 @@ public static class ServiceCollectionExtensions
         configuration = configuration.GetSection(consumerKey);
 
         kafka.AddConsumer(b => b
-            .WithKey<AccountCreationKey>()
-            .WithValue<AccountCreationValue>()
-            .WithConfiguration(configuration.GetSection("AccountCreation"))
+            .WithKey<ProtoAccountCreationKey>()
+            .WithValue<ProtoAccountCreationValue>()
+            .WithConfiguration(configuration.GetSection("AccountCreated"))
             .DeserializeKeyWithProto()
             .DeserializeValueWithProto()
-            .HandleWith<CreateAccountHandler>());
+            .HandleWith<CreateAccountKafkaHandler>());
 
         kafka.AddConsumer(b => b
-            .WithKey<InvoiceCreationKey>()
-            .WithValue<InvoiceCreationValue>()
-            .WithConfiguration(configuration.GetSection("InvoiceCreation"))
+            .WithKey<ProtoInvoiceCreationKey>()
+            .WithValue<ProtoInvoiceCreationValue>()
+            .WithConfiguration(configuration.GetSection("InvoiceCreated"))
             .DeserializeKeyWithProto()
             .DeserializeValueWithProto()
-            .HandleWith<CreateInvoiceHandler>());
+            .HandleWith<CreateInvoiceKafkaHandler>());
 
         return kafka;
     }

@@ -15,8 +15,8 @@ public sealed class InvoiceController : InvoiceService.InvoiceServiceBase
         _invoiceService = invoiceService;
     }
 
-    public override async Task<ApproveInvoiceResponse> ApproveInvoice(
-        ApproveInvoiceRequest request,
+    public override async Task<ProtoApproveInvoiceResponse> ApproveInvoice(
+        ProtoApproveInvoiceRequest request,
         ServerCallContext context)
     {
         var approveInvoiceRequest = new ApproveInvoice.Request(
@@ -38,13 +38,13 @@ public sealed class InvoiceController : InvoiceService.InvoiceServiceBase
             ApproveInvoice.Result.InvalidState invalidState => throw new RpcException(new Status(
                 StatusCode.FailedPrecondition,
                 invalidState.Message)),
-            ApproveInvoice.Result.Success success => new ApproveInvoiceResponse(),
+            ApproveInvoice.Result.Success success => new ProtoApproveInvoiceResponse(),
             _ => throw new UnreachableException(),
         };
     }
 
-    public override async Task<DeclineInvoiceResponse> DeclineInvoice(
-        DeclineInvoiceRequest request,
+    public override async Task<ProtoDeclineInvoiceResponse> DeclineInvoice(
+        ProtoDeclineInvoiceRequest request,
         ServerCallContext context)
     {
         var declineInvoiceRequest = new DeclineInvoice.Request(
@@ -66,7 +66,7 @@ public sealed class InvoiceController : InvoiceService.InvoiceServiceBase
             DeclineInvoice.Result.InvalidState invalidState => throw new RpcException(new Status(
                 StatusCode.FailedPrecondition,
                 invalidState.Message)),
-            DeclineInvoice.Result.Success success => new DeclineInvoiceResponse(),
+            DeclineInvoice.Result.Success success => new ProtoDeclineInvoiceResponse(),
             _ => throw new UnreachableException(),
         };
     }

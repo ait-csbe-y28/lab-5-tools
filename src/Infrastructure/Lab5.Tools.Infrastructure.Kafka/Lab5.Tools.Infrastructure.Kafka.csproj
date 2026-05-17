@@ -7,6 +7,7 @@
         </PackageReference>
         <PackageReference Include="Itmo.Dev.Platform.Kafka"/>
         <PackageReference Include="Itmo.Dev.Platform.MessagePersistence" />
+        <PackageReference Include="SourceKit.Generators.Grpc" />
     </ItemGroup>
 
     <ItemGroup>

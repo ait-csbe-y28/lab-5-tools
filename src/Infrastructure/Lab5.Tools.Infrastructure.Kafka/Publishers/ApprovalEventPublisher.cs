@@ -1,4 +1,3 @@
-using ApprovalResult.Kafka.Contracts;
 using Itmo.Dev.Platform.Kafka.Producer;
 using Lab5.Tools.Application.Abstractions.Events;
 using Lab5.Tools.Infrastructure.Kafka.Extensions;
@@ -7,9 +6,9 @@ namespace Lab5.Tools.Infrastructure.Kafka.Publishers;
 
 internal sealed class ApprovalEventPublisher : IApprovalEventPublisher
 {
-    private readonly IKafkaMessageProducer<ApprovalResultKey, ApprovalResultValue> _producer;
+    private readonly IKafkaMessageProducer<ProtoApprovalResultKey, ProtoApprovalResultValue> _producer;
 
-    public ApprovalEventPublisher(IKafkaMessageProducer<ApprovalResultKey, ApprovalResultValue> producer)
+    public ApprovalEventPublisher(IKafkaMessageProducer<ProtoApprovalResultKey, ProtoApprovalResultValue> producer)
     {
         _producer = producer;
     }
@@ -18,7 +17,7 @@ internal sealed class ApprovalEventPublisher : IApprovalEventPublisher
         IReadOnlyList<ApprovalInvoiceEvent> approvalInvoiceEvent,
         CancellationToken cancellationToken)
     {
-        IAsyncEnumerable<KafkaProducerMessage<ApprovalResultKey, ApprovalResultValue>> messages = approvalInvoiceEvent
+        IAsyncEnumerable<KafkaProducerMessage<ProtoApprovalResultKey, ProtoApprovalResultValue>> messages = approvalInvoiceEvent
             .Select(ev => ev.ToMessage())
             .ToAsyncEnumerable();
 
