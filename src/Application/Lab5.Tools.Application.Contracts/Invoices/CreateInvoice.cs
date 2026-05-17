@@ -1,14 +1,12 @@
-using Lab5.Tools.Application.Models.ValueObjects;
-
 namespace Lab5.Tools.Application.Contracts.Invoices;
 
 public static class CreateInvoice
 {
     public sealed record Request(
-        InvoiceId Id,
-        Money Amount,
-        AccountId RecipientId,
-        AccountId PayerId);
+        long Id,
+        decimal Amount,
+        long RecipientId,
+        long PayerId);
 
     public abstract record Result
     {

@@ -32,7 +32,8 @@ internal sealed class InvoiceService : IInvoiceService
 
     public async Task<CreateInvoice.Result> Create(CreateInvoice.Request request, CancellationToken cancellationToken)
     {
-        var getRecipientAccountQuery = GetAccountQuery.Build(builder => builder.WithId(request.RecipientId));
+        var getRecipientAccountQuery =
+            GetAccountQuery.Build(builder => builder.WithId(new AccountId(request.RecipientId)));
 
         Account? recipientAccount = await _persistenceContext.Accounts
             .Query(getRecipientAccountQuery, cancellationToken)
@@ -41,7 +42,7 @@ internal sealed class InvoiceService : IInvoiceService
         if (recipientAccount is null)
             return new CreateInvoice.Result.AccountNotFound($"Account with id: {request.RecipientId} not found");
 
-        var getPayerAccountQuery = GetAccountQuery.Build(builder => builder.WithId(request.PayerId));
+        var getPayerAccountQuery = GetAccountQuery.Build(builder => builder.WithId(new AccountId(request.PayerId)));
 
         Account? payerAccount = await _persistenceContext.Accounts
             .Query(getPayerAccountQuery, cancellationToken)
@@ -50,7 +51,11 @@ internal sealed class InvoiceService : IInvoiceService
         if (payerAccount is null)
             return new CreateInvoice.Result.AccountNotFound($"Account with id: {request.PayerId} not found");
 
-        var invoice = new Invoice(request.Id, request.Amount, request.RecipientId, request.PayerId);
+        var invoice = new Invoice(
+            new InvoiceId(request.Id),
+            new Money(request.Amount),
+            new AccountId(request.RecipientId),
+            new AccountId(request.PayerId));
 
         await _persistenceContext.Invoices.Create(invoice, cancellationToken);
 
@@ -61,13 +66,13 @@ internal sealed class InvoiceService : IInvoiceService
         AssignAccountant.Request request,
         CancellationToken cancellationToken)
     {
-        bool isExists = await IsUserExists(request.UserId, cancellationToken);
+        bool isExists = await IsUserExists(new UserId(request.UserId), cancellationToken);
 
         if (!isExists)
             return new AssignAccountant.Result.UserNotExist(request.UserId);
 
         var query = GetInvoiceQuery.Build(builder
-            => builder.WithId(request.InvoiceId));
+            => builder.WithId(new InvoiceId(request.InvoiceId)));
 
         Invoice? invoice = await _persistenceContext.Invoices
             .Query(query, cancellationToken)
@@ -76,7 +81,7 @@ internal sealed class InvoiceService : IInvoiceService
         if (invoice is null)
             return new AssignAccountant.Result.InvoiceNotFound(request.InvoiceId);
 
-        AssignAccountantResult result = invoice.AssignAccountant(request.UserId);
+        AssignAccountantResult result = invoice.AssignAccountant(new UserId(request.UserId));
 
         if (result is AssignAccountantResult.InvoiceNotPending)
             return new AssignAccountant.Result.InvoiceNotPending(request.InvoiceId, request.UserId);
@@ -94,7 +99,7 @@ internal sealed class InvoiceService : IInvoiceService
         CancellationToken cancellationToken)
     {
         var query = GetInvoiceQuery.Build(builder
-            => builder.WithId(request.InvoiceId));
+            => builder.WithId(new InvoiceId(request.InvoiceId)));
 
         Invoice? invoice = await _persistenceContext.Invoices
             .Query(query, cancellationToken)
@@ -103,7 +108,7 @@ internal sealed class InvoiceService : IInvoiceService
         if (invoice is null)
             return new ApproveInvoice.Result.NotFound($"Invoice with id: {request.InvoiceId} not found");
 
-        if (invoice.AccountantId == null || invoice.AccountantId != request.UserId)
+        if (invoice.AccountantId == null || invoice.AccountantId.Value != request.UserId)
             return new ApproveInvoice.Result.NotAssigned($"Invoice with id: {request.InvoiceId} doesn't have accountant with accountant id: {request.UserId}");
 
         InvoiceChangeStatusResult result = invoice.Approve();
@@ -117,7 +122,7 @@ internal sealed class InvoiceService : IInvoiceService
 
         await _persistenceContext.Invoices.Update(invoice, cancellationToken);
 
-        var @event = new ApprovalInvoiceEvent(request.InvoiceId, ApprovalStatus.Approved);
+        var @event = new ApprovalInvoiceEvent(new InvoiceId(request.InvoiceId), ApprovalStatus.Approved);
         await _approvalEventPublisher.Publish([@event], cancellationToken);
 
         await transaction.CommitAsync(cancellationToken);
@@ -130,7 +135,7 @@ internal sealed class InvoiceService : IInvoiceService
         CancellationToken cancellationToken)
     {
         var query = GetInvoiceQuery.Build(builder
-            => builder.WithId(request.InvoiceId));
+            => builder.WithId(new InvoiceId(request.InvoiceId)));
 
         Invoice? invoice = await _persistenceContext.Invoices
             .Query(query, cancellationToken)
@@ -139,7 +144,7 @@ internal sealed class InvoiceService : IInvoiceService
         if (invoice is null)
             return new DeclineInvoice.Result.NotFound($"Invoice with id: {request.InvoiceId} not found");
 
-        if (invoice.AccountantId == null || invoice.AccountantId != request.UserId)
+        if (invoice.AccountantId == null || invoice.AccountantId.Value != request.UserId)
             return new DeclineInvoice.Result.NotAssigned($"Invoice with id: {request.InvoiceId} doesn't have accountant with accountant id: {request.UserId}");
 
         InvoiceChangeStatusResult result = invoice.Decline();
@@ -153,7 +158,7 @@ internal sealed class InvoiceService : IInvoiceService
 
         await _persistenceContext.Invoices.Update(invoice, cancellationToken);
 
-        var @event = new ApprovalInvoiceEvent(request.InvoiceId, ApprovalStatus.Declined);
+        var @event = new ApprovalInvoiceEvent(new InvoiceId(request.InvoiceId), ApprovalStatus.Declined);
         await _approvalEventPublisher.Publish([@event], cancellationToken);
 
         await transaction.CommitAsync(cancellationToken);

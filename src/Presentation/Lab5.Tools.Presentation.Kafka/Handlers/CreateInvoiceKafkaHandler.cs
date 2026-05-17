@@ -1,6 +1,5 @@
 using Itmo.Dev.Platform.Kafka.Consumer;
 using Lab5.Tools.Application.Contracts.Invoices;
-using Lab5.Tools.Application.Models.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Lab5.Tools.Presentation.Kafka.Handlers;
@@ -30,10 +29,10 @@ public sealed class CreateInvoiceKafkaHandler : IKafkaConsumerHandler<ProtoInvoi
             }
 
             var request = new CreateInvoice.Request(
-                Id: new InvoiceId(message.Value.InvoiceId),
-                RecipientId: new AccountId(message.Value.RecipientId),
-                PayerId: new AccountId(message.Value.PayerId),
-                Amount: new Money(message.Value.Payment.DecimalValue));
+                Id: message.Value.InvoiceId,
+                RecipientId: message.Value.RecipientId,
+                PayerId: message.Value.PayerId,
+                Amount: message.Value.Payment.DecimalValue);
 
             CreateInvoice.Result result = await _invoiceService.Create(request, cancellationToken);
             HandleResult(result);

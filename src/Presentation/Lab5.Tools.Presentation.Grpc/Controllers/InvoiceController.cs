@@ -1,7 +1,6 @@
 using Grpc.Core;
 using Invoices.Grpc.Contracts;
 using Lab5.Tools.Application.Contracts.Invoices;
-using Lab5.Tools.Application.Models.ValueObjects;
 using System.Diagnostics;
 
 namespace Lab5.Tools.Presentation.Grpc.Controllers;
@@ -19,9 +18,7 @@ public sealed class InvoiceController : InvoiceService.InvoiceServiceBase
         ProtoApproveInvoiceRequest request,
         ServerCallContext context)
     {
-        var approveInvoiceRequest = new ApproveInvoice.Request(
-            new InvoiceId(request.InvoiceId),
-            new UserId(request.UserId));
+        var approveInvoiceRequest = new ApproveInvoice.Request(request.InvoiceId, request.UserId);
 
         ApproveInvoice.Result result = await _invoiceService.Approve(
             approveInvoiceRequest,
@@ -47,9 +44,7 @@ public sealed class InvoiceController : InvoiceService.InvoiceServiceBase
         ProtoDeclineInvoiceRequest request,
         ServerCallContext context)
     {
-        var declineInvoiceRequest = new DeclineInvoice.Request(
-            new InvoiceId(request.InvoiceId),
-            new UserId(request.UserId));
+        var declineInvoiceRequest = new DeclineInvoice.Request(request.InvoiceId, request.UserId);
 
         DeclineInvoice.Result result = await _invoiceService.Decline(
             declineInvoiceRequest,
@@ -75,9 +70,7 @@ public sealed class InvoiceController : InvoiceService.InvoiceServiceBase
         AssignAccountantRequest request,
         ServerCallContext context)
     {
-        var assignAccountantRequest = new AssignAccountant.Request(
-            new InvoiceId(request.InvoiceId),
-            new UserId(request.UserId));
+        var assignAccountantRequest = new AssignAccountant.Request(request.InvoiceId, request.UserId);
 
         AssignAccountant.Result result = await _invoiceService.AssignAccountant(
             assignAccountantRequest,
@@ -87,17 +80,17 @@ public sealed class InvoiceController : InvoiceService.InvoiceServiceBase
         {
             AssignAccountant.Result.AlreadyAssigned alreadyAssigned => throw new RpcException(new Status(
                 StatusCode.FailedPrecondition,
-                alreadyAssigned.InvoiceId.Value.ToString())),
+                alreadyAssigned.InvoiceId.ToString())),
             AssignAccountant.Result.InvoiceNotFound invoiceNotFound => throw new RpcException(new Status(
                 StatusCode.NotFound,
-                invoiceNotFound.InvoiceId.Value.ToString())),
+                invoiceNotFound.InvoiceId.ToString())),
             AssignAccountant.Result.InvoiceNotPending invoiceNotPending => throw new RpcException(new Status(
                 StatusCode.FailedPrecondition,
                 $"Invoice with id {invoiceNotPending.InvoiceId} is not pending")),
             AssignAccountant.Result.Success success => new AssignAccountantResponse(),
             AssignAccountant.Result.UserNotExist userNotExist => throw new RpcException(new Status(
                 StatusCode.NotFound,
-                userNotExist.UserId.Value.ToString())),
+                userNotExist.UserId.ToString())),
             _ => throw new UnreachableException(),
         };
     }

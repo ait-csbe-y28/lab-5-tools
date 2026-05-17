@@ -1,7 +1,6 @@
 using Accounts.Kafka.Contracts;
 using Itmo.Dev.Platform.Kafka.Consumer;
 using Lab5.Tools.Application.Contracts.Accounts;
-using Lab5.Tools.Application.Models.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Lab5.Tools.Presentation.Kafka.Handlers;
@@ -28,9 +27,7 @@ public sealed class CreateAccountKafkaHandler : IKafkaConsumerHandler<ProtoAccou
                 continue;
             }
 
-            var request = new CreateAccount.Request(
-                new UserId(message.Value.UserId),
-                new AccountId(message.Value.AccountId));
+            var request = new CreateAccount.Request(message.Value.UserId, message.Value.AccountId);
 
             CreateAccount.Result result = await _accountService.Create(request, cancellationToken);
             HandleResult(result);

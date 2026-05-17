@@ -1,10 +1,8 @@
-using Lab5.Tools.Application.Models.ValueObjects;
-
 namespace Lab5.Tools.Application.Contracts.Invoices;
 
 public static class ApproveInvoice
 {
-    public sealed record Request(InvoiceId InvoiceId, UserId UserId);
+    public sealed record Request(long InvoiceId, long UserId);
 
     public abstract record Result
     {

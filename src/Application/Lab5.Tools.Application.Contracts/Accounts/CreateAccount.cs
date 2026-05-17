@@ -1,10 +1,8 @@
-using Lab5.Tools.Application.Models.ValueObjects;
-
 namespace Lab5.Tools.Application.Contracts.Accounts;
 
 public static class CreateAccount
 {
-    public sealed record Request(UserId UserId, AccountId AccountId);
+    public sealed record Request(long UserId, long AccountId);
 
     public abstract record Result
     {
