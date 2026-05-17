@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
             o.Address = new Uri(options.Value.BaseUrl);
         });
 
-        collection.AddScoped<IAccountServiceClient, AccountServiceClient>();
+        collection.AddScoped<IUserServiceClient, UserServiceClient>();
 
         return collection;
     }

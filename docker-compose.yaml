@@ -3,7 +3,7 @@ services:
     container_name: lab5-tools
     build:
       context: .
-      dockerfile: src/Lab5.Tools/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       - postgres
       - kafka
@@ -57,7 +57,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_CREATE_TOPICS: "accounts_created:1:1,invoices_created:1:1,approvals_results:1:1"
+      KAFKA_CREATE_TOPICS: "account_created:1:1,invoice_created:1:1,approval_result:1:1"
     networks:
       - lab5-tools-network
 
@@ -75,13 +75,13 @@ services:
       kafka.clusters.0.serde.0.name: ProtobufFile
       kafka.clusters.0.serde.0.properties.protobufFilesDir: /schemas/
 
-      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.accounts_created: accounts.AccountCreationKey
-      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.invoices_created: invoices.InvoiceCreationKey
-      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.approvals_results: approvals.ApprovalResultKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.account_created: accounts.AccountCreationKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.invoice_created: invoices.InvoiceCreationKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.approval_result: approvals.ApprovalResultKey
 
-      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.accounts_created: accounts.AccountCreationValue
-      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.invoices_created: invoices.InvoiceCreationValue
-      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.approvals_results: approvals.ApprovalResultValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.account_created: accounts.AccountCreationValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.invoice_created: invoices.InvoiceCreationValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.approval_result: approvals.ApprovalResultValue
     ports:
       - "8080:8080"
     volumes:

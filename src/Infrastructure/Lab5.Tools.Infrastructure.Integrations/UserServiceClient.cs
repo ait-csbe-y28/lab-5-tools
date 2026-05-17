@@ -4,11 +4,11 @@ using Users.Grpc.Contracts;
 
 namespace Lab5.Tools.Infrastructure.Integrations;
 
-public sealed class AccountServiceClient : IAccountServiceClient
+public sealed class UserServiceClient : IUserServiceClient
 {
     private readonly UserService.UserServiceClient _client;
 
-    public AccountServiceClient(UserService.UserServiceClient client)
+    public UserServiceClient(UserService.UserServiceClient client)
     {
         _client = client;
     }

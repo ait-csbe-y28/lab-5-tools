@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package invoices;
+package user_service;
 
 option csharp_namespace = "Users.Grpc.Contracts";
 

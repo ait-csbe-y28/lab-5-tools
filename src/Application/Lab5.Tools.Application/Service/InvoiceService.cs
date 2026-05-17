@@ -16,12 +16,12 @@ internal sealed class InvoiceService : IInvoiceService
     private readonly IPersistenceContext _persistenceContext;
     private readonly IApprovalEventPublisher _approvalEventPublisher;
     private readonly IPersistenceTransactionProvider _transactionProvider;
-    private readonly IAccountServiceClient _client;
+    private readonly IUserServiceClient _client;
 
     public InvoiceService(
         IPersistenceContext persistenceContext,
         IApprovalEventPublisher approvalEventPublisher,
-        IAccountServiceClient client,
+        IUserServiceClient client,
         IPersistenceTransactionProvider transactionProvider)
     {
         _persistenceContext = persistenceContext;
