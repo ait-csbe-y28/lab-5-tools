@@ -10,7 +10,7 @@ using Lab5.Tools.Infrastructure.Integrations.Extensions;
 using Lab5.Tools.Infrastructure.Kafka.Extensions;
 using Lab5.Tools.Infrastructure.Persistence.Extensions;
 using Lab5.Tools.Presentation.Grpc.Extensions;
-using Lab5.Tools.Presentation.Kafka;
+using Lab5.Tools.Presentation.Kafka.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets<Program>();

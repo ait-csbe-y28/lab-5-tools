@@ -85,8 +85,8 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/account_creation.proto:/schemas/protos/account_created.proto:ro
-      - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/invoice_creation.proto:/schemas/protos/invoice_created.proto:ro
+      - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/account_created.proto:/schemas/protos/account_created.proto:ro
+      - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/invoice_created.proto:/schemas/protos/invoice_created.proto:ro
       - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos/google/type/money.proto:/schemas/google/type/money.proto:ro
       - ./src/Infrastructure/Lab5.Tools.Infrastructure.Kafka/protos/approval_result.proto:/schemas/protos/approval_result.proto:ro
     networks:

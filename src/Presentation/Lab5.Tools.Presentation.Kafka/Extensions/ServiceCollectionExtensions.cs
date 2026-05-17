@@ -3,7 +3,7 @@ using Itmo.Dev.Platform.Kafka.Extensions;
 using Lab5.Tools.Presentation.Kafka.Handlers;
 using Microsoft.Extensions.Configuration;
 
-namespace Lab5.Tools.Presentation.Kafka;
+namespace Lab5.Tools.Presentation.Kafka.Extensions;
 
 public static class ServiceCollectionExtensions
 {
