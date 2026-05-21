@@ -86,7 +86,7 @@ services:
       - "8003:8080"
     volumes:
       - ./src/Presentation/Lab5.Tools.Presentation.Kafka/protos:/schemas/protos:ro
-      - ./src/Infrastructure/Lab5.Tools.Infrastructure.Kafka/protos/approval_result.proto:/schemas/protos/approval_result.proto:ro
+      - ./src/Infrastructure/Lab5.Tools.Infrastructure.Kafka/protos:/schemas/infra-protos:ro
     environment:
       kafka.clusters.0.name: kafka
       kafka.clusters.0.bootstrapServers: kafka:9094
@@ -94,7 +94,7 @@ services:
       kafka.clusters.0.defaultValueSerde: ProtobufFile
 
       kafka.clusters.0.serde.0.name: ProtobufFile
-      kafka.clusters.0.serde.0.properties.protobufFilesDir: /schemas/protos/
+      kafka.clusters.0.serde.0.properties.protobufFilesDir: /schemas/
 
       kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.account_created: accounts.AccountCreationKey
       kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.invoice_created: invoices.InvoiceCreationKey
