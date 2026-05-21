@@ -5,9 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Google.Api.CommonProtos" Version="2.17.0" />
-    <PackageVersion Include="Grpc.AspNetCore" Version="2.67.0" />
-    <PackageVersion Include="Grpc.AspNetCore.Server.Reflection" Version="2.67.0" />
-    <PackageVersion Include="Grpc.Tools" Version="2.67.0" />
+    <PackageVersion Include="Grpc.AspNetCore" Version="2.80.0" />
+    <PackageVersion Include="Grpc.AspNetCore.Server.Reflection" Version="2.80.0" />
+    <PackageVersion Include="Grpc.Tools" Version="2.80.0" />
     <PackageVersion Include="Itmo.Dev.Editorconfig" Version="1.0.16" />
     <PackageVersion Include="Itmo.Dev.Platform.Kafka" Version="2.3.388" />
     <PackageVersion Include="Itmo.Dev.Platform.MessagePersistence" Version="3.0.388" />

@@ -20,11 +20,12 @@ builder.Services.AddPlatform(platform => platform
 
 builder.AddPlatformObservability();
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructurePersistence();
-builder.Services.AddAccountsServiceIntegration();
-builder.Services.AddEventPublisher();
-builder.Services.AddPresentationGrpc();
+builder.Services
+    .AddApplication()
+    .AddInfrastructurePersistence()
+    .AddAccountsServiceIntegration()
+    .AddEventPublisher()
+    .AddPresentationGrpc();
 
 builder.Services.AddPlatformKafka(kafka => kafka
     .ConfigureOptions(builder.Configuration.GetSection("Presentation:Kafka"))
