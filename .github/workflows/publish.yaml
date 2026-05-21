@@ -10,6 +10,7 @@ on:
       - '*.props'
       - 'Dockerfile'
       - '*.sln'
+      - '.yaml'
 
 env:
   REGISTRY: ghcr.io
